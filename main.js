@@ -18,8 +18,18 @@ const initialPrompt = () => {
     inquirer
     .prompt ([
     {
-        name: 
-
+        type: 'list',
+        message: 'Pick one of the following options:',
+        name: 'choices',
+        choices: [
+        'View All Employees',
+        'Add Employee', 
+        'Update Employee Role',
+        'View All Roles',
+        'Add role', 
+        'View All Departments',
+        'Add Department',]
+        
     }    
     ])
 }
