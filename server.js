@@ -71,7 +71,7 @@ const addEmployee = () => {
             type: 'input',
             message: 'What is the employees last name?',
             name: 'lastname'
-        }
+        },
         {
             type: 'input',
             message: 'What is the employees role ID number?',
@@ -85,4 +85,88 @@ const addEmployee = () => {
                 initialPrompt();
             };
     })
+};
+
+const updateRole = () => {
+    viewAllEmployees()
+    inquirer
+        .prompt ([
+            {
+                type: 'input',
+                message: 'Enter employee ID number:',
+                name: 'employeeID'
+            },
+            {
+                type: 'input',
+                message: 'Enter the new update ID number:',
+                name: 'updatedID'
+            }
+        ])
+        .then((response) => {
+            db.query(`UPDATE employees SET role_id = ${response.updatedID} WHERE role_id = ${response.employeeID}`), (err, res) => {
+                if (err) throw err;
+                console.table(rows);
+                initialPrompt();
+            };
+        })
 }
+
+const viewAllRoles = () => {
+    db.query('SELECT * FROM roles JOIN departments ON roles.department_id = departments.id'), (err, res) => {
+        if (err) throw err;
+        console.table(rows);
+        initialPrompt();
+    };
+}
+
+const addRole = () => {
+    viewAllDepartment();
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                message: 'Enter title of the employees role:',
+                name: 'title'
+            },
+            {
+                type: 'input',
+                message: 'What is this employees salary?',
+                name: 'salary'
+            },
+        ])
+        .then((reponse) => {
+            db.query(`INSERT INTO roles (title, salary) VALUES('${response.title}', '${response.salary}')`), (err, res) => {
+                if (err) throw err;
+                console.table(rows);
+                initialPrompt();
+            };
+        })
+}
+
+const viewAllDepartment = () => {
+    db.query('SELECT * FROM departments'), (err, res) => {
+        if (err) throw err;
+        console.table(rows);
+        initialPrompt();
+    };
+}
+
+const addDepartment = () => {
+    inquirer
+        .prompt([
+        {
+            type: 'input',
+            message: 'What is the name of the new Department you would like to add?',
+            name: 'newdepartment'
+        }
+        ])
+        .then((response) => {
+            db.query(`INSERT INTO departments (name) VALUES ('${response.newdepartment}')`), (err, res) => {
+                if (err) throw err;
+                console.table(rows);
+                initialPrompt();
+            };
+        })
+};
+
+initialPrompt();
